@@ -65,19 +65,62 @@ public class SpartansWeekend {
 
         Long phone = response.jsonPath().getLong("content[0].phone");
         System.out.println("phone num is: " + phone);
-       // response.body().prettyPrint();
+        // response.body().prettyPrint();
 
-        List<Long> phones= response.jsonPath().getList("content.phone");
+        List<Long> phones = response.jsonPath().getList("content.phone");
         System.out.println(phones);
 
-        List<String>names= response.jsonPath().getList("content.name");
+        List<String> names = response.jsonPath().getList("content.name");
         System.out.println(names);
 
-        List< Map<String, String> >objectlist = response.jsonPath().getList("content");
+        List<Map<String, String>> objectlist = response.jsonPath().getList("content");
 
         System.out.println(objectlist.get(0).get("name"));
+    }
+
+    //get single spartan as Json response
+    //store it inside a Map of String and Object
+    //Verify do some assertion with expeccted value you already set
+
+
+    @Test
+    public void GetSingleSpartanJson() {
+        RequestSpecification reqSpec = given().accept(ContentType.JSON);
+
+        Response response =
+                given().
+                        accept(ContentType.JSON).
+                        pathParam("id", "102").
+                        when().
+                        get(baseURI + "spartans/{id}");
+
+        response.prettyPrint();
+
+        Map<String, Object> Json102 = response.jsonPath().getMap("");
+
+        assertEquals(2336546599L, response.jsonPath().getLong("phone"));
+    }
+
+    @Test
+    public void AllSpartanJsonMap() {
+        RequestSpecification reqSpec = given().accept(ContentType.JSON);
+
+        Response response =
+                given().
+                        accept(ContentType.JSON).
+                        queryParam("gender", "Male").
+                        get(baseURI + "spartans/search");
+
+
+        response.prettyPrint();
+
+        List<Map<String, Object>> allSpartans = response.jsonPath().getList("content");
+        for (Map<String, Object> eachSpartan : allSpartans) {
+            System.out.println("eachSpartan = " + eachSpartan.get("name"));
+
+        }
 
     }
+
+
 }
-
-
