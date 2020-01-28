@@ -140,7 +140,7 @@ public class SpartanEndPointTests {
         Response response = given().
                 accept(ContentType.JSON).
                 // queryParam("gender", "male").
-                        params("gender", "male", "nameContains", "ol").
+                        params("gender", "male").
                 //queryParam("nameContains", "ol").
                         when().
                         get(baseURI + "spartans/search");

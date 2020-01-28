@@ -9,10 +9,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static io.restassured.RestAssured.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -120,33 +117,76 @@ Invalid region test
                 when().get(baseURI);
         assertEquals(200, response.statusCode());
 
-        List<String> names = Collections.singletonList(response.path("name").toString());
-        List<String> sirnames = Collections.singletonList(response.path("surname").toString());
+        List<String> names = response.jsonPath().getList("name");
+        List<String> sirnames = response.jsonPath().getList("surname");
         List<String> fullNames = new ArrayList<>();
 
-
-
-        String[] namesArray = names.get(0).replace("[", "").replace("]", "").replace(",", "").split(" ");
-        ;
-
-        String[] sirnamesArray = sirnames.get(0).replace("[", "").replace("]", "").replace(",", "").split(" ");
-
-
         for (int i = 0; i < names.size(); i++) {
-            fullNames.add(namesArray[i] + " " + sirnamesArray[i]);
+            fullNames.add(names.get(i) + " " + sirnames.get(i));
         }
 
-        System.out.println(fullNames);
         boolean nameSirnameCombinationsEqual = true;
+        for (int i = 0; i < fullNames.size(); i++) {
 
-        for (int i = 0; i < fullNames.size()-1; i++) {
-            if (fullNames.get(i).equals(fullNames.get(i + 1))) {
-                nameSirnameCombinationsEqual = false;
+            int count = 0;
+            for (int j = 0; j < fullNames.size(); j++) {
+                if (fullNames.get(i).equals(fullNames.get(j))) {
+                    count++;
+                }
+                if (count > 1) {
+                    nameSirnameCombinationsEqual = false;
+                }
             }
         }
-
         assertTrue(nameSirnameCombinationsEqual);
         System.out.println(fullNames);
+    }
+    /*
 
+    3 params test
+1. Create a request by providing query parameters: a valid region, gender and amount (must be bigger
+            than 1)
+2. Verify status code 200, content type application/json; charset=utf-8
+            3. Verify that all objects the response have the same region and gender passed in step 1
+*/
+
+    @Test
+    public void ThreeParamTest (){
+
+        Response response= given().
+                queryParam("region", "Turkey").
+                queryParam("gender", "female").
+                queryParam("amount", 25).
+                when().get(baseURI);
+
+        response.prettyPrint();
+        assertEquals(200, response.statusCode());
+        assertEquals("application/json; charset=utf-8", response.contentType());
+
+        List<Map<String, String> >outcomeMap= response.jsonPath().getList("");
+
+
+        for (Map<String, String> object:outcomeMap) {
+            assertTrue(object.get("region").contains("Turkey"));
+            assertTrue(object.get("gender").contains("female"));
+        }
+    }
+
+    /*
+    Amount count test
+1. Create a request by providing query parameter: amount (must be bigger than 1)
+2. Verify status code 200, content type application/json; charset=utf-8
+3. Verify that number of objects returned in the response is same as the amount passed in step 1
+     */
+
+    @Test
+    public void AmountCountTest(){
+        Response response = given().
+                queryParam("amount", 25).
+                when().get(baseURI);
+
+        assertEquals(200, response.statusCode());
+        assertEquals("application/json; charset=utf-8", response.contentType());
+        assertEquals(25, response.jsonPath().getList("").size());
     }
 }

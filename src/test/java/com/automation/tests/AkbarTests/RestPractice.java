@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.*;
@@ -30,6 +31,23 @@ public class RestPractice {
     }
     @Test
     public void test2(){
+        Integer arr []= {1,2,3,4,5};
+        Integer arr2 []= {3,6,5,4,4};
+
+        Integer merged [] = new Integer[arr.length + arr2.length];
+
+        for (int i = 0; i <arr.length ; i++) {
+            merged[i] = arr[i];
+
+
+            for (int j = 0; j < arr2.length; j++) {
+                merged[arr.length + j] = arr2[j];
+
+            }
+        }
+        System.out.println(Arrays.toString(merged));
+
+
         Response response = get(ConfigurationReader.getProperty("spartans_uri") + "hello");
         System.out.println(response.getStatusCode());
         System.out.println(response.asString());
