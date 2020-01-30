@@ -39,7 +39,7 @@ public class HamcrestLibrary {
  }
 
     @Test
-    public void VerifySingleSpartanSelected() {
+    public void VerifySingleSpartanSelectedHamcrest() {
 
                 given()
                     .pathParam("id", 2).
@@ -51,12 +51,14 @@ public class HamcrestLibrary {
                         .contentType(ContentType.JSON)
                         .body("id", equalTo(2))
                         .body("gender", equalToIgnoringCase("male"))
-                        .body("phone", hasToString("4124579201"))
-                               ;
-
-
+                        .body("phone", hasToString("4124579201"));
 
     }
+
+
+
+
+
 
 
 

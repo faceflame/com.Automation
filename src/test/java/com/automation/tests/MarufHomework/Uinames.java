@@ -117,7 +117,8 @@ Invalid region test
                 when().get(baseURI);
         assertEquals(200, response.statusCode());
 
-        List<String> names = response.jsonPath().getList("name");
+        List<String> names = response.jsonPath().
+                getList("name");
         List<String> sirnames = response.jsonPath().getList("surname");
         List<String> fullNames = new ArrayList<>();
 
@@ -126,6 +127,7 @@ Invalid region test
         }
 
         boolean nameSirnameCombinationsEqual = true;
+
         for (int i = 0; i < fullNames.size(); i++) {
 
             int count = 0;
