@@ -171,6 +171,46 @@ Number of repositories
             }
             assertTrue(nodeUnique);
         }
+/*
+Repository owner information
+1. Send a get request to /orgs/:org. Request includes :
+• Path param org with value cucumber
+2. Grab the value of the field id
+3. Send a get request to /orgs/:org/repos. Request includes :
+• Path param org with value cucumber
+4. Verify that value of the id inside the owner object in every response is equal to value from step 2
+ */
+
+@Test
+    public void RepositoyryOwnerInformation (){
+
+    Response response = given().
+            pathParam("org", "cucumber")
+            .get("/orgs/{org}");
+
+    Integer idField= response.jsonPath().getInt("id");
+    System.out.println(idField);
+
+    Response response2 = given().
+            pathParam("org", "cucumber")
+            .get("/orgs/{org}/repos");
+
+    List<Integer> IDs=response2.jsonPath().getList("[].id");
+
+    boolean IsIDequal= true;
+
+    for (int i = 0; i <IDs.size() ; i++) {
+        if(IDs.get(i) != idField){
+            IsIDequal=false;
+        }
+            }
+
+        assertTrue(IsIDequal);
+
+
+}
+
+
 
 
 }
