@@ -102,16 +102,15 @@ public class Serialization_DeSerialization {
     //sending a post request
     public void Add_New_Spartan_With_Map_As_Pojo_Test(){
 
-        //this is where we store a java object to be later transformed into single json
-        Map<String, Object>bodyMap= new HashMap<>();
-        bodyMap.put("name", "Tyrion Lnnister");
-        bodyMap.put("gender", "Male");
-        bodyMap.put("phone", 6178495632L);
+        //this time, we send all relevant info from a POJO to create Json
+
+        Spartan spartanAydan= new Spartan("Aydan", "Male", 1236549875L);
 
         given()
                 .log().all()
                 .contentType(ContentType.JSON)
-                .body(bodyMap).
+                .body(spartanAydan).
+
                 when()
                 .post(baseURI + "spartans/").
 
