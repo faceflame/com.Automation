@@ -8,6 +8,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static io.restassured.RestAssured.*;
@@ -134,7 +136,13 @@ Number of repositories
                     pathParam("org", "cucumber")
                     .get("/orgs/{org}/repos");
 
-            List<Integer> IDs= response2.jsonPath().getList("id");
+            List<String> IDs= response2.jsonPath().getList("id");
+            List<String> sortedIDs= response2.jsonPath().getList("id");
+
+            assertEquals(sortedIDs, IDs);
+
+
+//assertEquals(Collections.sort(IDs), response2.jsonPath().getList("id"));
 
             boolean idUnique= true;
 
