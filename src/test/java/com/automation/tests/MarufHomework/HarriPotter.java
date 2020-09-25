@@ -40,7 +40,6 @@ Verify sorting hat
                         when()
                         .get(harriPotterURL + "sortingHat");
 
-
         //gotta use replaceAll because the body is returning one letter in each line(corresponding to a key)
         String responseText= response.asString().replaceAll("\"", "");
 
@@ -126,6 +125,22 @@ Verify sorting hat
          //total number of objects is 195. therefore this test fails
             assertEquals(194, objects.size());
         }
+/*
+Verify number of character id and house
+1. Send a get request to /characters. Request includes :
+• Header Accept with value application/json
+• Query param key with value {{apiKey}}
+2. Verify status code 200, content type application/json; charset=utf-8
+3. Verify all characters in the response have id field which is not empty
+4. Verify that value type of the field dumbledoresArmy is a boolean in all characters in the response
+5. Verify value of the house in all characters in the response is one of the following:
+"Gryffindor", "Ravenclaw", "Slytherin", "Hufflepuff"
+ */
 
+    @Test
+    public void Verify_Number_of_Chars_ID_and_House_Test(){
+
+
+    }
 
 }
